@@ -10,7 +10,6 @@ export async function POST(
 
         const data = await req.json();;    
         
-        console.log("DATA", data);
 
         const Lead = await db.lead.createMany({
             data
@@ -21,7 +20,7 @@ export async function POST(
     
     }
     catch(err){
-        console.log("PATIENT_CREATE", err)
+        console.error("PATIENT_CREATE", err)
         return new NextResponse("Internal server error" , {status: 500})
     }
 }

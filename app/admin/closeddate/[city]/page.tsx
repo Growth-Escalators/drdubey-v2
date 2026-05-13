@@ -3,8 +3,6 @@ import { db } from "@/lib/db";
 import React from "react";
 import { format, formatISO } from "date-fns";
 import { Day } from "@prisma/client";
-import { currentProfile } from "@/lib/current-profile";
-import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import ClosingDate from "@/components/ClosingDate/ClosingDate";
 import EditableTable from "@/components/EditableTable/EditableTable";
@@ -15,19 +13,6 @@ interface HomeProps {
 }
 
 const page = async ({ params }: { params: { city: string } }) => {
-  const user = await currentUser();
-
-  if (!user) {
-    return redirect("/sign-in");
-  }
-  const profile = await db.profile.findUnique({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  if (!profile) {
-  }
   const days = await db.day.findMany({
     where: {
       cityname: params.city,

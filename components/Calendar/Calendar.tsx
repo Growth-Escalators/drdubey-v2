@@ -16,9 +16,15 @@ import {
 } from "./Constants/config";
 import { useRouter } from "next/navigation";
 import { getOpeningTimes, roundToNearestMinutes } from "@/utils/helper";
-import { Day } from "@prisma/client";
+interface Day {
+  id: string;
+  cityname: string;
+  name: string;
+  dayOfWeek: number;
+  openTime: string;
+  closeTime: string;
+}
 import { useModal } from "@/hooks/use-modal-store";
-import { currentUser } from "@clerk/nextjs";
 import qs from "query-string";
 
 type DateTime = {

@@ -1,71 +1,9 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
 import GTM from "@/utils/GTM";
 import { redirect } from "next/navigation";
-import React from "react";
 
+// Patient authentication has been removed; redirect to booking page.
 const AppointmentList = async () => {
-  const profile = await currentProfile();
-  if (!profile) {
-    return redirect("/sign-in");
-  }
-  const appointments = await db.appointment.findMany({
-    where: {
-      userId: profile.userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  return (
-    <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-
-        <title>Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
-
-        {/* Favicon for branding */}
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
-      <div className="bg-gray-100 min-h-screen py-8">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-            Your Appointments
-          </h2>
-          {appointments.length === 0 ? (
-            <p className="text-lg text-gray-600 text-center">
-              No appointments booked yet.
-            </p>
-          ) : (
-            <ul className="divide-y divide-gray-300">
-              {appointments.map((appointment) => (
-                <li
-                  key={appointment.id}
-                  className="py-4 transition duration-300 transform hover:scale-105"
-                >
-                  <div className="flex items-center justify-between ">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 ">
-                        {appointment.name.toUpperCase()}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {appointment.date} at {appointment.time}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-    </>
-  );
+  redirect("/booking/jaipur");
 };
 
 export default AppointmentList;

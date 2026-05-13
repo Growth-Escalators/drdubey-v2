@@ -10,8 +10,6 @@ export async function POST(
 
         const {name, email, phone, gender, address , remark, age, doad, dood, dx, surgery, side, ipdReg, bill, implant, patientStatus, tpa, cities
          } = await req.json();
-        console.log(ipdReg, bill);
-        
 
         const Lead = await db.lead.create({
             data: {
@@ -44,7 +42,7 @@ export async function POST(
     
     }
     catch(err){
-        console.log("PATIENT_CREATE", err)
+        console.error("PATIENT_CREATE", err)
         return new NextResponse("Internal server error" , {status: 500})
     }
 }

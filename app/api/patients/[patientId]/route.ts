@@ -45,7 +45,7 @@ export async function PATCH  (
 
     }
     catch(err){
-        console.log("lead ID PATCH",err);
+        console.error("lead ID PATCH",err);
         return new NextResponse("Internal error", {status: 500})
     }
 

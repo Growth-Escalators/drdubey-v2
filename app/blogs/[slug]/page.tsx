@@ -1,123 +1,280 @@
-import Footer from "@/components/Footer/Footer";
-import Navbar from "@/components/Navbar/navbar";
-import { db } from "@/lib/db";
-import Head from "next/head";
-import Image from "next/image";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import React from "react";
+import Navbar from "@/components/Navbar/navbar";
+import Footer from "@/components/Footer/Footer";
+import { defaultSEO } from "@/lib/seo.config";
+import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { db } from "@/lib/db";
 
-const page = async ({ params }: { params: { slug: string } }) => {
-  console.log("the slug is ", params.slug);
+export const revalidate = 3600;
 
-  const data = await db.blogs.findFirst({
-    where: {
-      slug: params.slug,
+async function getBlogBySlug(slug: string) {
+  try {
+    return await db.blogs.findFirst({
+      where: { slug, isPublished: true },
+    });
+  } catch {
+    return null;
+  }
+}
+
+async function getRecentBlogs() {
+  try {
+    return await db.blogs.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: "desc" },
+      take: 5,
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const blog = await getBlogBySlug(params.slug);
+
+  if (!blog) {
+    return { title: "Blog Not Found" };
+  }
+
+  const title = blog.metaTitle || blog.title;
+  const description =
+    blog.metaDescription || blog.subtitle1?.slice(0, 160) || "";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${defaultSEO.siteUrl}/blogs/${blog.slug}`,
     },
-  });
+    openGraph: {
+      title,
+      description,
+      url: `${defaultSEO.siteUrl}/blogs/${blog.slug}`,
+      siteName: defaultSEO.siteName,
+      images: [
+        {
+          url:
+            (blog as any).coverImage ||
+            blog.image1 ||
+            `${defaultSEO.siteUrl}/assets/images/hero.png`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [
+        (blog as any).coverImage ||
+          blog.image1 ||
+          `${defaultSEO.siteUrl}/assets/images/hero.png`,
+      ],
+    },
+  };
+}
 
-  const allBlogs = await db.blogs.findMany();
+const BlogArticleJsonLd = ({ blog }: { blog: any }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blog.title,
+    description: blog.metaDescription || blog.subtitle1,
+    image: blog.coverImage || blog.image1,
+    datePublished: blog.publishedAt,
+    dateModified: blog.publishedAt,
+    author: {
+      "@type": "Person",
+      name: "Dr. Dheeraj Dubay",
+      url: defaultSEO.siteUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: defaultSEO.siteName,
+      url: defaultSEO.siteUrl,
+    },
+    url: `${defaultSEO.siteUrl}/blogs/${blog.slug}`,
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+};
 
-  console.log("the data  is ", data);
+export default async function BlogDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const [blog, recentBlogs] = await Promise.all([
+    getBlogBySlug(params.slug),
+    getRecentBlogs(),
+  ]);
+
+  if (!blog) {
+    notFound();
+  }
 
   return (
     <>
-      <head>
-        <title>{data?.metaTitle || "Default Title"}</title>
-        <meta
-          name="description"
-          content={data?.metaDescription || "Default Description"}
-        />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
+      <BlogArticleJsonLd blog={blog} />
+      <BreadcrumbJsonLd items={[
+        { name: "Home", url: "https://www.drdubay.in" },
+        { name: "Blog", url: "https://www.drdubay.in/blogs" },
+        { name: blog.title, url: `https://www.drdubay.in/blogs/${blog.slug}` },
+      ]} />
       <Navbar />
-      <div className="container mx-auto">
-        <main className="mt-12">
-          <div className="flex flex-col md:flex-row space-x-0 md:space-x-6 mb-16 ">
-            <div className="left mb-4 lg:mb-0 md:p-4 lg:p-0 w-full md:w-4/7 relative rounded block">
-              <h1 className="text-gray-800 text-4xl md:text-5xl font-bold mt-2 mb-2 md:mb-8 leading-tight">
-                {data?.title}
+      <div className="container mx-auto px-4">
+        <main className="mt-12 mb-16">
+          {/* Breadcrumb */}
+          <div className="mb-6 text-sm text-gray-500">
+            <Link href="/" className="hover:text-primary">
+              Home
+            </Link>
+            {" / "}
+            <Link href="/blogs" className="hover:text-primary">
+              Blog
+            </Link>
+            {" / "}
+            <span className="text-gray-700">{blog.title}</span>
+          </div>
+
+          <div className="flex flex-col md:flex-row space-x-0 md:space-x-8">
+            {/* Main content */}
+            <div className="w-full md:w-4/6">
+              <h1 className="text-gray-800 text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                {blog.title}
               </h1>
-              <Image
-                src={data?.image1 || "/assets/images/col2.jpg"}
-                height={900}
-                width={900}
-                alt="img"
-                className="rounded-md object-cover w-[700px] h-[670px]"
-              />
-              <span className="text-green-700 text-sm hidden md:block mt-4">
-                Dr. Dheeraj Dubay
-              </span>
-              <h1
-                style={{ whiteSpace: "pre-wrap" }}
-                className="text-gray-600 text-2xl font-semibold mt-2 mb-2 leading-tight"
-              >
-                {data?.subtitle1}
-              </h1>
-              <p style={{ whiteSpace: "pre-wrap" }} className="text-xl">
-                {data?.content1}
-              </p>
 
-              {data?.subtitle2 ? (
-                <h1
-                  style={{ whiteSpace: "pre-wrap" }}
-                  className="text-gray-600 text-2xl font-semibold mt-2 mb-2 leading-tight"
-                >
-                  {data?.subtitle2}
-                </h1>
-              ) : (
-                <></>
-              )}
-
-              {data?.image2 ? (
-                <Image
-                  src={data?.image2 || "/assets/images/col2.jpg"}
-                  height={900}
-                  width={900}
-                  alt="img"
-                  className="rounded-md object-cover w-[700px] h-[500px]"
-                />
-              ) : (
-                <></>
-              )}
-
-              {data?.content2 ? (
-                <p style={{ whiteSpace: "pre-wrap" }} className="text-xl">
-                  {data?.content2}
+              {blog.publishedAt && (
+                <p className="text-sm text-gray-400 mb-6">
+                  Published{" "}
+                  {new Date(blog.publishedAt).toLocaleDateString("en-IN", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                  {" · "}
+                  <span className="text-green-700">Dr. Dheeraj Dubay</span>
                 </p>
-              ) : (
-                <></>
               )}
+
+              {/* Cover / primary image */}
+              {((blog as any).coverImage || blog.image1) && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={(blog as any).coverImage || blog.image1}
+                  alt={blog.title}
+                  className="rounded-md object-cover w-full max-h-[480px] mb-6"
+                />
+              )}
+
+              {/* Tags */}
+              {(blog as any).tags?.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {(blog as any).tags.map((tag: string) => (
+                    <Link
+                      key={tag}
+                      href={`/blogs?tag=${encodeURIComponent(tag)}`}
+                      className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-600 hover:bg-blue-100"
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              {/* Subtitle1 */}
+              <h2 className="text-gray-700 text-xl font-semibold mb-3">
+                {blog.subtitle1}
+              </h2>
+
+              {/* Content1 — rendered as HTML from Quill */}
+              <div
+                className="text-gray-700 text-base leading-relaxed mb-8"
+                dangerouslySetInnerHTML={{ __html: blog.content1 }}
+              />
+
+              {/* Image1 (secondary) */}
+              {blog.image1 && (blog as any).coverImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={blog.image1}
+                  alt={blog.subtitle1}
+                  className="rounded-md object-cover w-full max-h-[400px] mb-8"
+                />
+              )}
+
+              {/* Section 2 */}
+              {blog.subtitle2 && (
+                <h2 className="text-gray-700 text-xl font-semibold mb-3 mt-8">
+                  {blog.subtitle2}
+                </h2>
+              )}
+
+              {blog.image2 && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={blog.image2}
+                  alt={blog.subtitle2 || ""}
+                  className="rounded-md object-cover w-full max-h-[400px] mb-6"
+                />
+              )}
+
+              {blog.content2 && (
+                <div
+                  className="text-gray-700 text-base leading-relaxed mb-8"
+                  dangerouslySetInnerHTML={{ __html: blog.content2 }}
+                />
+              )}
+
+              <Link
+                href="/blogs"
+                className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+              >
+                ← Back to all posts
+              </Link>
             </div>
 
-            <div className="right w-full md:w-2/3 ">
-              <div className="md:sticky md:top-8  ">
-                <div className=" text-[#EE8A27] font-semibold m-2 text-xl">
-                  recent post
-                </div>
-
-                <div className="rounded w-full flex flex-col  mb-10">
-                  {allBlogs?.map((item: any) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <Link href={`/blogs/${item.slug}`}>
-                      <div
-                        key={item.id}
-                        className="rounded w-full flex flex-col md:flex-row mb-5 md:mb-10"
-                      >
-                        <Image
-                          height={250}
-                          width={200}
-                          src={item.image1 || "/assets/images/contact.jpg"}
-                          alt="img"
-                          className="block md:hidden lg:block rounded-md h-32 w-60  md:h-32 m-4 md:m-0"
+            {/* Sidebar — recent posts */}
+            <div className="w-full md:w-2/6 mt-10 md:mt-0">
+              <div className="md:sticky md:top-8">
+                <p className="text-[#EE8A27] font-semibold text-xl mb-4">
+                  Recent Posts
+                </p>
+                <div className="flex flex-col gap-4">
+                  {recentBlogs.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={`/blogs/${item.slug}`}
+                      className="flex gap-3 group"
+                    >
+                      {(item as any).coverImage || item.image1 ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={(item as any).coverImage || item.image1}
+                          alt={item.title}
+                          className="w-20 h-16 object-cover rounded-md flex-shrink-0"
                         />
-                        <div className="bg-white rounded px-4">
-                          <div className="md:mt-0  text-gray-800 font-semibold text-xl mb-2">
-                            {item.title}
-                          </div>
-                          <p className=" p-2 pl-0 pt-1 text-sm text-gray-600">
-                            {item.subtitle1}
-                          </p>
-                        </div>
+                      ) : null}
+                      <div>
+                        <p className="text-gray-800 font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1 line-clamp-1">
+                          {item.subtitle1}
+                        </p>
                       </div>
                     </Link>
                   ))}
@@ -130,6 +287,4 @@ const page = async ({ params }: { params: { slug: string } }) => {
       <Footer />
     </>
   );
-};
-
-export default page;
+}

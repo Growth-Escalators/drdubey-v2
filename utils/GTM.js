@@ -1,22 +1,7 @@
-"use client"
-import { useEffect } from 'react';
-
-const GTM = ({ gtmId }) => {
-  useEffect(() => {
-    if (!gtmId) return;
-
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
-    script.async = true;
-
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [gtmId]);
-
-  return null;
-};
+// GTM is now loaded globally in app/layout.tsx — this component is a no-op
+// kept only so the existing per-page <GTM gtmId="..." /> imports still build.
+// Safe to delete after removing the imports.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const GTM = (_props) => null;
 
 export default GTM;

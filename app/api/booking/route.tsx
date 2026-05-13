@@ -35,7 +35,7 @@ export async function POST(
 
     return NextResponse.json(booking);
   } catch (error) {
-    console.log("[BOOKING_CRETATE]", error);
+    console.error("[BOOKING_CREATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

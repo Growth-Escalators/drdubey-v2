@@ -45,8 +45,8 @@ const Section1 = (props: Props) => {
                 We’re Setting the New Standards in Medical Sector
               </h2>
               <p className="mb-4 text-xl leading-7 text-gray-500 dark:text-gray-400">
-                Sr. Consultant Joint Replacement Surgery – Shalby
-                Multi-Specialty Hospital MBBS, MS (Orthopedic), FJRS (Germany)
+                Director, Robotic Joint Replacement Surgery – Shalby
+                Hospital Jaipur. MBBS, MS (Orthopedic), FJRS (Germany)
                 Ex. Consultant & Head of Joint Replacement Surgery – HCG
                 Hospitals
               </p>

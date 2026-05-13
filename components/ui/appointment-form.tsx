@@ -6,7 +6,11 @@ import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { GenderType } from "@prisma/client";
+enum GenderType {
+  M = "M",
+  F = "F",
+  OTHER = "OTHER",
+}
 import { toast } from "react-hot-toast";
 
 import {
@@ -43,7 +47,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { ScrollArea } from "@/components//ui/scroll-area";
-import { Lead } from "@prisma/client";
+// Lead type removed — not used in this component
 import { useEffect } from "react";
 
 interface AddpatientProps {
@@ -328,3 +332,4 @@ const Appointment = ({ name, email, userId }: AddpatientProps) => {
 };
 
 export default Appointment;
+//

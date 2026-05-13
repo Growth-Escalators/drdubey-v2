@@ -1,4 +1,11 @@
+import { generatePageMetadata } from "@/lib/seo.config";
 import ContactSection from "@/components/ContactForm/Form2";
+
+export const metadata = generatePageMetadata({
+  title: "Contact Dr. Dheeraj Dubay | Book Appointment Jaipur",
+  description: "Contact Dr. Dheeraj Dubay at Shalby Hospital Jaipur or Dr. Dubay Hip & Knee Clinic. Book your joint replacement consultation today.",
+  slug: "contact",
+});
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/navbar";
 import GoogleMaps from "@/components/ui/map";

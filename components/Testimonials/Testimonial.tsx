@@ -25,14 +25,14 @@ export const Testimonial = () => {
           playDirection="forward"
           interval={2000}
         >
-          <h1 className="text-5xl font-bold xl:block hidden leading-tight text-gray-800 dark:text-gray-200">
+          <h2 className="text-5xl font-bold xl:block hidden leading-tight text-gray-800 dark:text-gray-200">
             What our <span className="text-primary">patients</span> are
             <br />
             saying
-          </h1>
-          <h1 className="text-5xl font-bold xl:hidden block leading-tight lg:leading-10 text-gray-800 dark:text-gray-200">
+          </h2>
+          <h2 className="text-5xl font-bold xl:hidden block leading-tight lg:leading-10 text-gray-800 dark:text-gray-200">
             What our <span className="text-primary">patients</span> are saying
-          </h1>
+          </h2>
           <Slider>
             <Slide index={2}>
               <div
@@ -55,9 +55,9 @@ export const Testimonial = () => {
                   </div>
                   <div className="md:w-1/3 lg:w-1/3 xl:ml-32 md:ml-20 md:mt-0 mt-4 flex flex-col justify-between">
                     <div>
-                      <h1 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
-                        Some of the best work that was done!
-                      </h1>
+                      <h2 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
+                        Excellent team, excellent results
+                      </h2>
                       <p className="text-lg font-medium md:text-2xl leading-6 mt-4 text-gray-600 dark:text-gray-300">
                         Dr dheeraj dubey is the best doctor with knee
                         replacement their team work is excellent my mother did
@@ -95,9 +95,9 @@ export const Testimonial = () => {
                   </div>
                   <div className="md:w-1/3 lg:w-1/3 xl:ml-32 md:ml-20 md:mt-0 mt-4 flex flex-col justify-between">
                     <div>
-                      <h1 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
-                        Some of the best work that was done!
-                      </h1>
+                      <h2 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
+                        My father is walking properly again
+                      </h2>
                       <p className="text-base md:text-2xl font-medium leading-6 mt-4 text-gray-600 dark:text-gray-300">
                         I went to dr dheeraj dubey for my father knee
                         replacement surgery. Amazing and very polite doctor. My
@@ -131,9 +131,9 @@ export const Testimonial = () => {
                   </div>
                   <div className="md:w-1/3 lg:w-1/3 xl:ml-32 md:ml-20 md:mt-0 mt-4 flex flex-col justify-between">
                     <div>
-                      <h1 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200 ">
-                        Some of the best work that was done!
-                      </h1>
+                      <h2 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200 ">
+                        Best surgeon in Shalby Hospital
+                      </h2>
                       <p className="text-base md:text-2xl font-medium leading-6 mt-4 text-gray-600 dark:text-gray-200">
                         Dr dheeraj dubay amazing Dr with great work and best
                         knee and hip replacement surgeon in shalby hospital
@@ -170,9 +170,9 @@ export const Testimonial = () => {
                   </div>
                   <div className="md:w-1/3 lg:w-1/3 xl:ml-32 md:ml-20 md:mt-0 mt-4 flex flex-col justify-between">
                     <div>
-                      <h1 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
-                        Some of the best work that was done!
-                      </h1>
+                      <h2 className="text-2xl font-semibold xl:leading-loose text-gray-800 dark:text-gray-200">
+                        No more pain after years of suffering
+                      </h2>
                       <p className="text-base md:text-2xl font-medium leading-6 mt-4 text-gray-600 dark:text-gray-300">
                         Dr dheeraj best knee and hip surgeon in shalby Hospital.
                         My mother is complety fine now and is able to walk

@@ -26,9 +26,9 @@ const Hero = (props: Props) => {
               Dr. Dheeraj Dubay
             </h1>
             <h1 className="text-xl  mt-2 font-bold leading-snug tracking-tight text-gray-800 lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight dark:text-white">
-              Sr. Consultant Joint Replacement Surgery - Shalby Multi-Specialty
-              Hospital MBBS, MS (Orthopedic), FJRS (Germany) Ex. Consultant &
-              Head of Joint Replacement Surgery - HCG Hospitals
+              Director, Robotic Joint Replacement Surgery — Shalby
+              Hospital Jaipur. MBBS, MS (Orthopedic), FJRS (Germany). Ex. Consultant &
+              Head of Joint Replacement Surgery — HCG Hospitals
             </h1>
             <p className="py-5 text-lg leading-normal text-gray-500 lg:text-lg xl:text-lg dark:text-gray-300">
               Dr. Dheeraj is one of the leading joint replacement surgeons in
@@ -43,13 +43,13 @@ const Hero = (props: Props) => {
                 Germany in complex and revision joint replacement surgeries.{" "}
               </span>
               He has more than{" "}
-              <span className="text-primary"> 16 years of experience </span> in
+              <span className="text-primary"> 23 years of experience </span> in
               the field of Joint Replacement Surgeries and is well wersed with
               latest techniques such as computer navigation and minimally
               invasive surgeries. Now he is performing replacement surgeries at
-              Shalby Multi-Specialty Hospital, Jaipur. He has done{" "}
+              Shalby Hospital, Jaipur. He has done{" "}
               <span className="text-primary">
-                more than 24000 successful Joint Replacement Surgeries.{" "}
+                more than 35,000 successful Joint Replacement Surgeries.{" "}
               </span>{" "}
               Record of 34 joint replacement surgeries in a day in Rajasthan. He
               has been active on various social platforms in creating awareness

@@ -1,4 +1,13 @@
+import { generatePageMetadata } from "@/lib/seo.config";
 import Section1 from "@/components/AboutUs/Section1";
+
+export const revalidate = 3600;
+
+export const metadata = generatePageMetadata({
+  title: "About Dr. Dheeraj Dubay | Joint Replacement Specialist Jaipur",
+  description: "Learn about Dr. Dheeraj Dubay - MBBS, MS Orthopedic, FJRS Germany. 23+ years experience, 35000+ surgeries, Forbes World Record holder.",
+  slug: "about",
+});
 import Section2 from "@/components/AboutUs/Section2";
 import Footer from "@/components/Footer/Footer";
 
@@ -10,10 +19,15 @@ import React from "react";
 type Props = {};
 
 const page = async (props: Props) => {
-  const newimages = await db.image.findMany({});
-  console.log("the images are ", newimages);
+  let newimages: any[] = [];
+  try {
+    newimages = await db.image.findMany({});
+  } catch {
+    newimages = [];
+  }
+
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
 
@@ -28,10 +42,11 @@ const page = async (props: Props) => {
       </head>
       <Section2 />
       <Section1 />
-      <Gallery images={newimages} />
-
+      <div className="py-12">
+        <Gallery images={newimages} />
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

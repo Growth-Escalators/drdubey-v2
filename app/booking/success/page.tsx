@@ -1,47 +1,17 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
-import { useReactTable } from "@tanstack/react-table";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import GTM from "@/utils/GTM";
 
 const BookingSuccess = async () => {
-  const profile = await currentProfile();
-  if (!profile) {
-    return redirect("/sign-in");
-  }
-
-  const bookings = await db.profile.findUnique({
-    where: {
-      userId: profile.userId,
-    },
-
-    include: {
-      appointments: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-    },
-  });
-  if (!bookings) {
-    return redirect("/booking");
-  }
-
-  console.log(bookings);
-
   return (
     <>
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
-
-        <title>Dr. Dubay</title>
+        <title>Booking Successful | Dr. Dubay</title>
         <meta
           name="description"
           content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
         />
-
-        {/* Favicon for branding */}
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-indigo-500">
@@ -52,15 +22,10 @@ const BookingSuccess = async () => {
           <p className="text-center text-lg text-gray-700 mb-6">
             Thank you for booking with us. Your appointment has been confirmed.
           </p>
-          <div className="flex justify-between">
+          <div className="flex justify-center">
             <Link href="/">
               <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded">
                 Back to Home
-              </button>
-            </Link>
-            <Link href="/profile">
-              <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
-                My appointments
               </button>
             </Link>
           </div>

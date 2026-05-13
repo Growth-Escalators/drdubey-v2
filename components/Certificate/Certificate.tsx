@@ -21,11 +21,11 @@ const Certificate = (props: Props) => {
           </div>
 
           <div data-aos="fade-left">
-            <h1 className="block text-2xl font-bold text-gray-800 sm:text-3xl lg:text-5xl lg:leading-tight dark:text-white">
+            <h2 className="block text-2xl font-bold text-gray-800 sm:text-3xl lg:text-5xl lg:leading-tight dark:text-white">
               Dr. Dubay got awarded for
               <span className="text-primary"> Most Trusted</span> Joint
               Replacement Surgeon of the Year
-            </h1>
+            </h2>
             <p className="mt-3 text-xl md:text-2xl text-gray-800 dark:text-gray-400">
               He has been awarded for excellence in Joint Replacement surgery by
               the Health Minister of Rajasthan for the last 3 consecutive years.
@@ -59,14 +59,14 @@ const Certificate = (props: Props) => {
       {/* <div className="w-[85%] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
           <div data-aos="fade-left">
-            <h1 className="block text-2xl font-bold text-gray-800 sm:text-3xl lg:text-5xl lg:leading-tight dark:text-white">
+            <h2 className="block text-2xl font-bold text-gray-800 sm:text-3xl lg:text-5xl lg:leading-tight dark:text-white">
               Recently invited as a
               <span className="text-primary">
                 {" "}
                 senior consultant in Spain (Madrid){" "}
               </span>
               for AO recon Complex Arthroplasty course
-            </h1>
+            </h2>
             <p className="mt-3 text-xl md:text-2xl text-gray-800 dark:text-gray-400">
               His recent invitation to serve as a senior consultant for the AO
               Recon Complex Arthroplasty course in Madrid, Spain, underscores
