@@ -10,6 +10,7 @@ import {
   MailIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { CITY_PAGES } from "@/lib/city-pages";
 
 type Props = {};
 
@@ -35,7 +36,7 @@ const Footer = (props: Props) => {
     },
     {
       name: 'LinkedIn',
-      href: 'https://www.linkedin.com/',
+      href: 'https://www.linkedin.com/in/dr-dheeraj-dubay-36399599/',
       icon: LinkedinIcon,
       bgClass: 'bg-gradient-to-r from-blue-600 to-blue-700',
       hoverClass: 'hover:from-blue-700 hover:to-blue-800',
@@ -167,6 +168,33 @@ const Footer = (props: Props) => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Service Areas — internal linking block (helps SEO crawl priority
+            on programmatic city-procedure pages). One link from every page on
+            the site to each city page; Google interprets that as a strong
+            "this URL matters" signal. */}
+        <div className="border-t border-gray-200 dark:border-gray-700/50">
+          <div className="container px-4 py-10 mx-auto">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+              Service Areas
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+              Dr. Dheeraj Dubay serves joint replacement patients across Rajasthan and beyond:
+            </p>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {CITY_PAGES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/${c.slug}`}
+                    className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                  >
+                    {c.procedure} in {c.city}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

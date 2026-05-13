@@ -1,10 +1,27 @@
 import { HINDI_PAGES } from '@/lib/hindi-pages'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
+import { CONDITION_PAGES } from '@/lib/condition-pages'
 import { notFound } from 'next/navigation'
 import { BreadcrumbNav, CTASection, FAQAccordion, TrustBadges } from '@/components/pages'
 import type { Metadata } from 'next'
+import { defaultSEO } from '@/lib/seo.config'
 
 export async function generateStaticParams() {
   return HINDI_PAGES.map(p => ({ page: p.slug }))
+}
+
+// Resolve the English URL for a Hindi page's `englishSlug` by looking it up
+// in both PROCEDURE_PAGES and CONDITION_PAGES. Returns the absolute URL or
+// null if no English twin exists.
+function resolveEnglishUrl(englishSlug?: string): string | null {
+  if (!englishSlug) return null
+  if (PROCEDURE_PAGES.some((p: { slug: string }) => p.slug === englishSlug)) {
+    return `${defaultSEO.siteUrl}/procedures/${englishSlug}`
+  }
+  if (CONDITION_PAGES.some((c: { slug: string }) => c.slug === englishSlug)) {
+    return `${defaultSEO.siteUrl}/conditions/${englishSlug}`
+  }
+  return null
 }
 
 export async function generateMetadata(
@@ -12,14 +29,29 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const page = HINDI_PAGES.find(p => p.slug === params.page)
   if (!page) return {}
+  const canonical = `${defaultSEO.siteUrl}/hindi/${page.slug}`
+  const englishUrl = resolveEnglishUrl(page.englishSlug)
+
   return {
     title: page.metaTitle,
     description: page.metaDescription,
     alternates: {
-      canonical: `https://www.drdubay.in/hindi/${page.slug}`,
-      languages: page.englishSlug
-        ? { 'en': `https://www.drdubay.in/conditions/${page.englishSlug}` }
+      canonical,
+      languages: englishUrl
+        ? {
+            'en-IN': englishUrl,
+            'hi-IN': canonical,
+            'x-default': englishUrl,
+          }
         : undefined,
+    },
+    openGraph: {
+      title: page.metaTitle,
+      description: page.metaDescription,
+      url: canonical,
+      locale: 'hi_IN',
+      alternateLocale: englishUrl ? ['en_IN'] : undefined,
+      type: 'article',
     },
   }
 }

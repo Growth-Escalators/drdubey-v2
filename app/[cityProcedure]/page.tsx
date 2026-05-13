@@ -1,6 +1,9 @@
 import { CITY_PAGES } from '@/lib/city-pages'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { BreadcrumbNav } from '@/components/pages'
+import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
+import { defaultSEO } from '@/lib/seo.config'
 
 export async function generateStaticParams() {
   return CITY_PAGES.map(p => ({
@@ -13,12 +16,22 @@ export async function generateMetadata(
 ) {
   const page = CITY_PAGES.find(p => p.slug === params.cityProcedure)
   if (!page) return {}
+  const url = `${defaultSEO.siteUrl}/${page.slug}`
   return {
     title: page.title,
     description: page.description,
-    alternates: {
-      canonical: `https://www.drdubay.in/${page.slug}`
-    }
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.title,
+      description: page.description,
+    },
   }
 }
 
@@ -28,12 +41,58 @@ export default function CityPage(
   const page = CITY_PAGES.find(p => p.slug === params.cityProcedure)
   if (!page) return notFound()
 
+  const breadcrumbs = [
+    { name: 'Home', url: defaultSEO.siteUrl },
+    { name: `${page.procedure} in ${page.city}`, url: `${defaultSEO.siteUrl}/${page.slug}` },
+  ]
+
+  // MedicalBusiness + Service schema — Jaipur surgeon serving this city.
+  // The local-pack signal: tie the doctor + procedure + service-area together.
+  const localServiceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalBusiness',
+    name: `Dr. Dheeraj Dubay — ${page.procedure} for ${page.city} Patients`,
+    description: page.description,
+    url: `${defaultSEO.siteUrl}/${page.slug}`,
+    telephone: '+91-8955373205',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '200 Feet Bypass Road, Vaishali Nagar',
+      addressLocality: 'Jaipur',
+      addressRegion: 'Rajasthan',
+      postalCode: '302021',
+      addressCountry: 'IN',
+    },
+    areaServed: [
+      { '@type': 'City', name: page.city },
+      { '@type': 'City', name: 'Jaipur' },
+    ],
+    medicalSpecialty: 'Orthopedic Surgery',
+    physician: {
+      '@type': 'Physician',
+      name: 'Dr. Dheeraj Dubay',
+      medicalSpecialty: 'Orthopedic Surgery',
+    },
+  }
+
   return (
-    <main style={{
+    <>
+      <BreadcrumbJsonLd items={breadcrumbs} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceSchema) }}
+      />
+      <main style={{
       maxWidth: '800px',
       margin: '0 auto',
       padding: '40px 24px',
     }}>
+      <BreadcrumbNav
+        crumbs={[
+          { label: 'Home', href: '/' },
+          { label: `${page.procedure} in ${page.city}` },
+        ]}
+      />
       <div style={{
         display: 'inline-block',
         backgroundColor: '#eff6ff',
@@ -155,5 +214,6 @@ export default function CityPage(
         </a>
       </div>
     </main>
+    </>
   )
 }

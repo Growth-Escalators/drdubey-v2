@@ -1,7 +1,9 @@
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
+import { HINDI_PAGES } from '@/lib/hindi-pages'
 import { notFound } from 'next/navigation'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
 import type { Metadata } from 'next'
+import { defaultSEO } from '@/lib/seo.config'
 
 export async function generateStaticParams() {
   return PROCEDURE_PAGES.map(p => ({ procedure: p.slug }))
@@ -12,10 +14,31 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const page = PROCEDURE_PAGES.find(p => p.slug === params.procedure)
   if (!page) return {}
+  const canonical = `${defaultSEO.siteUrl}/procedures/${page.slug}`
+  const hindiTwin = HINDI_PAGES.find(h => h.englishSlug === page.slug)
+  const hindiUrl = hindiTwin ? `${defaultSEO.siteUrl}/hindi/${hindiTwin.slug}` : null
+
   return {
     title: page.metaTitle,
     description: page.metaDescription,
-    alternates: { canonical: `https://www.drdubay.in/procedures/${page.slug}` },
+    alternates: {
+      canonical,
+      languages: hindiUrl
+        ? {
+            'en-IN': canonical,
+            'hi-IN': hindiUrl,
+            'x-default': canonical,
+          }
+        : undefined,
+    },
+    openGraph: {
+      title: page.metaTitle,
+      description: page.metaDescription,
+      url: canonical,
+      locale: 'en_IN',
+      alternateLocale: hindiUrl ? ['hi_IN'] : undefined,
+      type: 'article',
+    },
   }
 }
 
