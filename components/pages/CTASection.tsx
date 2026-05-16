@@ -1,3 +1,5 @@
+import { getWhatsAppBookingUrl } from '@/lib/whatsapp-booking'
+
 export function CTASection({
   heading = 'Ready to Walk Without Pain?',
   subheading = 'Book a consultation with Dr. Dheeraj Dubay today. Available at Shalby Hospital Vaishali Nagar and Dr. Dubay Hip & Knee Clinic, Vidhyadhar Nagar, Jaipur.',
@@ -13,7 +15,9 @@ export function CTASection({
       <p className="text-blue-100 mb-8 max-w-xl mx-auto leading-relaxed">{subheading}</p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="/booking/jaipur"
+          href={getWhatsAppBookingUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
           className="bg-white text-blue-700 px-8 py-3 rounded-xl font-bold text-sm hover:bg-blue-50 transition-colors"
         >
           Book Appointment

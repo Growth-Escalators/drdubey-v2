@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { CITY_PAGES } from "@/lib/city-pages";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
 type Props = {};
 
@@ -95,9 +96,19 @@ const Footer = (props: Props) => {
                 Quick Links
               </h3>
               <ul className="space-y-4">
-                {['Book Appointment', 'About Us', 'Contact Us'].map((item) => (
+                <li>
+                  <a
+                    href={getWhatsAppBookingUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors duration-300"
+                  >
+                    <span className="border-b border-transparent hover:border-emerald-500">Book Appointment</span>
+                  </a>
+                </li>
+                {['About Us', 'Contact Us'].map((item) => (
                   <li key={item}>
-                    <Link 
+                    <Link
                       href={`/${item.toLowerCase().replace(' ', '-')}`}
                       className="inline-flex text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors duration-300"
                     >

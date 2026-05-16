@@ -44,13 +44,6 @@ const Section2 = (props: Props) => {
                 educating the public about bone and joint health through various
                 social platforms.
               </p>
-              <div
-                className="max-w-max mt-4 px-4 py-3 text-gray-100 uppercase
-                bg-primary rounded hover:bg-cyan-500 dark:hover:bg-cyan-500
-                dark:hover:text-gray-50 dark:text-gray-100 hover:text-gray-100 "
-              >
-                Know More
-              </div>
             </div>
             <div className="w-full px-4 md:my-8 mb-10 lg:w-1/2 lg:mb-0">
               <div className="relative">

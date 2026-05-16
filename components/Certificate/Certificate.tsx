@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
 type Props = {};
 
@@ -38,12 +39,14 @@ const Certificate = (props: Props) => {
               {/* City Dropdown */}
 
               <div className="">
-                <Link
+                <a
                   className="p-2 relative inline-flex justify-center items-center gap-x-3 text-center bg-primary hover:bg-blue-700 border border-primary text-sm lg:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800"
-                  href={"/booking/jaipur"}
+                  href={getWhatsAppBookingUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Book an appoinment
-                </Link>
+                </a>
               </div>
 
               <Link
@@ -77,12 +80,14 @@ const Certificate = (props: Props) => {
 
             <div className="mt-7 grid gap-3 w-full sm:inline-flex">
               <div className="">
-                <Link
+                <a
                   className="p-2 relative inline-flex justify-center items-center gap-x-3 text-center bg-primary hover:bg-blue-700 border border-primary text-sm lg:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800"
-                  href={"/booking/jaipur"}
+                  href={getWhatsAppBookingUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Book an appoinment
-                </Link>
+                </a>
               </div>
 
               <Link

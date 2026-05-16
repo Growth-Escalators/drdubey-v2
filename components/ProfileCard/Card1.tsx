@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
 type Props = {};
 //
@@ -86,7 +87,9 @@ const Card1 = (props: Props) => {
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="/booking/jaipur"
+                  href={getWhatsAppBookingUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200 dark:shadow-none"
                 >
                   Book Appointment
